@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDNFlix - Petualangan Belajar</title>
+    <title>SDNFlix - Film Perpisahan</title>
+    <!-- Meta referrer ditambahkan untuk kelancaran iframe Google Drive -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <style>
         /* ===== RESET & VARIABLES ===== */
         :root {
             --bg-primary: #141414;
             --text-primary: #FFFFFF;
+            --text-secondary: #bcbcbc;
             --brand-red: #E50914;
             --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -81,6 +87,42 @@
             font-weight: bold;
         }
 
+        /* ===== PROFIL USER (Kanan Atas) ===== */
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            display: block;
+            /* Default tampil di desktop */
+        }
+
+        .profile-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #0f4c81, #1a73e8);
+            /* Warna biru edukasi */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
         /* ===== HERO SECTION ===== */
         .hero {
             position: relative;
@@ -115,7 +157,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: 
+            background:
                 linear-gradient(to right, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.5) 40%, transparent 70%),
                 linear-gradient(to top, rgba(20, 20, 20, 1) 0%, transparent 30%);
         }
@@ -131,33 +173,44 @@
             font-weight: 900;
             margin-bottom: 15px;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.1;
         }
 
         .hero-description {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 25px;
             line-height: 1.5;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            /* Batasi maksimal 3 baris di mobile */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .hero-buttons {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
+            /* Agar tombol turun ke bawah di layar sangat kecil */
         }
 
         .btn {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            padding: 12px 28px;
+            padding: 10px 24px;
             border-radius: 4px;
             border: none;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
+            min-width: 140px;
+            /* Lebar minimum tombol */
         }
-        
+
         .btn:active {
             transform: scale(0.95);
         }
@@ -194,28 +247,31 @@
 
         .row-title {
             padding: 0 4%;
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
+            /* Ukuran font responsif */
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #e5e5e5;
         }
 
         .row-slider {
             display: flex;
             gap: 8px;
-            padding: 20px 4%;
+            padding: 10px 4% 30px 4%;
+            /* Padding bawah ditambah agar shadow tidak terpotong */
             overflow-x: auto;
             scroll-behavior: smooth;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
 
         .row-slider::-webkit-scrollbar {
-            display: none; /* Chrome, Safari */
+            display: none;
         }
 
         .movie-card {
             flex: 0 0 auto;
-            width: 260px;
+            width: clamp(140px, 30vw, 260px);
+            /* Ukuran kartu responsif */
             aspect-ratio: 16 / 9;
             background-color: #333;
             border-radius: 4px;
@@ -225,10 +281,13 @@
             overflow: hidden;
         }
 
-        .movie-card:hover {
-            transform: scale(1.15);
-            z-index: 10;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+        /* Hanya jalankan efek hover di perangkat desktop (yang punya mouse) */
+        @media (hover: hover) and (pointer: fine) {
+            .movie-card:hover {
+                transform: scale(1.15);
+                z-index: 10;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+            }
         }
 
         .movie-card img {
@@ -237,7 +296,7 @@
             object-fit: cover;
         }
 
-        /* ===== MODAL ===== */
+        /* ===== MODALS BASE ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -257,23 +316,6 @@
         .modal-overlay.active {
             opacity: 1;
             pointer-events: all;
-        }
-
-        .modal-container {
-            width: 80%;
-            max-width: 1000px;
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-            border-radius: 8px;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-            overflow: hidden;
-        }
-
-        .modal-overlay.active .modal-container {
-            transform: scale(1);
         }
 
         .close-btn {
@@ -299,21 +341,200 @@
             background-color: rgba(20, 20, 20, 0.95);
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== VIDEO MODAL ===== */
+        .video-modal-container {
+            width: 95%;
+            /* Lebih lebar di mobile */
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 8px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .video-modal-container {
+            transform: scale(1);
+        }
+
+        .video-modal-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ===== INFO MODAL ===== */
+        .info-modal-container {
+            width: 95%;
+            /* Lebih lebar di mobile */
+            max-width: 850px;
+            max-height: 90vh;
+            background-color: #181818;
+            border-radius: 8px;
+            position: relative;
+            transform: translateY(50px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .modal-overlay.active .info-modal-container {
+            transform: translateY(0);
+        }
+
+        .info-header {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to top, #181818 0%, transparent 100%), url('assets/poster_1.png') center/cover no-repeat;
+            background-color: #333;
+            /* Fallback */
+            display: flex;
+            align-items: flex-end;
+            padding: 30px 40px;
+        }
+
+        .info-header h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            /* Responsif */
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
+        }
+
+        .info-content {
+            padding: 20px 40px 40px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .info-meta {
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            /* Agar rapi jika layar sempit */
+            gap: 10px;
+            align-items: center;
+        }
+
+        .info-meta .match {
+            color: #46d369;
+        }
+
+        .info-meta .rating {
+            border: 1px solid #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .info-meta .year {
+            color: var(--text-secondary);
+        }
+
+        .info-synopsis {
+            font-size: clamp(14px, 3vw, 16px);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .info-details p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .info-details span.label {
+            color: #fff;
+            font-weight: bold;
+            display: block;
+            /* Judul tabel di atas kontennya */
+            margin-bottom: 3px;
+        }
+
+        .cast-list {
+            display: inline;
+        }
+
+        /* ===== MEDIA QUERIES (MOBILE RESPONSIVE) ===== */
         @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 4%;
+            }
+
+            .navbar-logo {
+                font-size: 24px;
+            }
+
             .navbar-links {
                 display: none;
+                /* Sembunyikan link di HP agar tidak penuh */
             }
+
+            .profile-name {
+                display: none;
+                /* Sembunyikan nama di HP, sisakan avatar saja */
+            }
+
+            .hero {
+                height: 65vh;
+                min-height: 400px;
+                padding-bottom: 50px;
+            }
+
             .hero-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
+                margin-bottom: 10px;
             }
-            .movie-card {
-                width: 180px;
+
+            .hero-description {
+                font-size: 1rem;
+                margin-bottom: 15px;
             }
-            .modal-container {
-                width: 95%;
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+                min-width: 120px;
+            }
+
+            .info-content {
+                grid-template-columns: 1fr;
+                /* Jadi satu kolom dari atas ke bawah */
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .info-header {
+                height: 180px;
+                padding: 20px;
+            }
+
+            .close-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .content-section {
+                margin-top: -30px;
+            }
+
+            .row {
+                margin-bottom: 25px;
             }
         }
+
         /* ===== LOADER ===== */
         .loader-overlay {
             position: fixed;
@@ -344,11 +565,19 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- LOADER -->
@@ -360,6 +589,7 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-left">
             <a href="#" class="navbar-logo">SDNFlix</a>
+            <!-- Link disembunyikan di Mobile -->
             <ul class="navbar-links">
                 <li><a href="#">Beranda</a></li>
                 <li><a href="#">Animasi Seru</a></li>
@@ -367,22 +597,34 @@
                 <li><a href="#">Budi Pekerti</a></li>
             </ul>
         </div>
+
+        <!-- PROFIL PAJANGAN -->
+        <div class="navbar-right">
+            <div class="profile-container">
+                <span class="profile-name">SDN 231 Sukaasih</span>
+                <div class="profile-avatar">S</div>
+            </div>
+        </div>
     </nav>
 
     <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-video-wrapper">
-            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-                <source src="assets/[TRAILER] 64 DETAK, SATU RUANG - SDN 231 SUKAASIH (1080p, h264).mp4" type="video/mp4">
+            <!-- Video Latar Tetap Menggunakan File Lokal Assets. Autoplay dikontrol penuh via JS untuk menghindari AbortError -->
+            <video muted loop playsinline id="heroBackgroundVideo"
+                style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+                <source src="assets/[TRAILER] 64 DETAK, SATU RUANG - SDN 231 SUKAASIH (1080p, h264).mp4"
+                    type="video/mp4">
             </video>
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">64 Detak, Satu Ruang</h1>
-            <p class="hero-description">Sebuah kenangan manis tentang persahabatan, tawa, dan cerita yang kita ukir bersama. Selamat melangkah ke jenjang baru, teman-teman!</p>
+            <p class="hero-description">Sebuah kenangan manis tentang persahabatan, tawa, dan cerita yang kita ukir
+                bersama. Selamat melangkah ke jenjang baru, teman-teman!</p>
             <div class="hero-buttons">
                 <button class="btn btn-play" id="heroPlayBtn">▶ Putar Video</button>
-                <button class="btn btn-info">ℹ️ Info Lanjut</button>
+                <button class="btn btn-info" id="heroInfoBtn">ℹ️ Info Lanjut</button>
             </div>
         </div>
     </header>
@@ -392,28 +634,101 @@
         <!-- Rows will be injected by JavaScript -->
     </main>
 
-    <!-- VIDEO MODAL -->
+    <!-- VIDEO MODAL (PUTAR FILM) -->
     <div class="modal-overlay" id="videoModal">
-        <div class="modal-container">
-            <button class="close-btn" id="closeModalBtn">✖</button>
-            <video id="mainVideoPlayer" controls style="width: 100%; height: 100%; outline: none;">
-                <source src="assets/[TRAILER] 64 DETAK, SATU RUANG - SDN 231 SUKAASIH (1080p, h264).mp4" type="video/mp4">
-                Browser Anda tidak mendukung pemutar video.
-            </video>
+        <div class="video-modal-container">
+            <button class="close-btn" id="closeVideoModalBtn">✖</button>
+            <!-- Link Google Drive Utama -->
+            <iframe id="mainVideoPlayer" src="" allow="autoplay" allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+    </div>
+
+    <!-- INFO MODAL (DETAIL FILM & PEMERAN) -->
+    <div class="modal-overlay" id="infoModal">
+        <div class="info-modal-container">
+            <button class="close-btn" id="closeInfoModalBtn">✖</button>
+            <div class="info-header">
+                <h2>64 Detak, Satu Ruang</h2>
+            </div>
+            <div class="info-content">
+                <!-- Sisi Kiri: Sinopsis -->
+                <div class="info-left">
+                    <div class="info-meta">
+                        <span class="match">100% Cocok</span>
+                        <span class="year">2026</span>
+                        <span class="rating">SU</span>
+                        <span class="duration">Film Kenangan</span>
+                    </div>
+                    <p class="info-synopsis">
+                        Sebuah perjalanan penuh makna yang merekam jejak langkah, canda tawa, dan tangis haru
+                        persahabatan selama enam tahun masa putih merah. Film ini merangkum 64 detak jantung yang
+                        menyatu dalam satu ruang kenangan tak terlupakan di SDN 231 Sukaasih. Sebuah persembahan karya
+                        terakhir, sebelum kita saling melambaikan tangan dan melangkah mengejar cita-cita yang lebih
+                        tinggi.
+                    </p>
+                </div>
+                <!-- Sisi Kanan: Detail Cast & Produser -->
+                <div class="info-details">
+                    <p>
+                        <span class="label">Produser:</span> SDN 231 Sukaasih
+                    </p>
+                    <p>
+                        <span class="label">Pemeran:</span>
+                        <span class="cast-list">
+                            Adnan Maulana Gani, Almahira Chantrice Arifin, Alvaro Nur Gavriel, Amanda Khoirunnisa,
+                            Anindya Aulia Zahra, Asri Rahmadhani, Christian Juliano, Cica Susanti, Deja Akbar Nugraha,
+                            Delina Alysa Permadi, Gea Natasha Aurelia, Gista Ainaya Febrianti, Iksan Rudiyansyah, Iqbal
+                            Radika Putra, Kaira Rizkiani, Meysya Salsa Futry, Moch Raihan Ramdhani, Mohamad Al Habib,
+                            Muhamad Dermawan, Nadhifa Syahla Qanita, Nazwa Alika Lesmana, Puri Juniyani, Radit Aditiya
+                            Saputra, Ratu Chairunissa Aprilianiputri, Rehan Azhar Wiharsa, Rifat Fathur Rahman, Robbi
+                            Zakaria, Setia Putri Arinda, Siti Raisya Assifa Putri Sudrajat, Yumna Fahira Aziza, Zamzam
+                            Septian, Zehan Amzhar Wiharsa, Aisah Saskya Bilqis, Alesha Dzikra Wijaya Putri, Aqila Putri
+                            Herdiansyah, Aqilla Julianti, Billy Dzulfikar, Dara Ocktarina, Dea Gustian, Furi Deanova
+                            Azhar, Ghaisani Nareswari Danuwidjaja, Ghisya Humaira Aqila, Himada Wafiq Alfatih, Iiko
+                            Hansamu Trie, Khaleesi Azahra Kayla Sophia, Mahalya Raya Gusilpa, Meisya Juanita, Mochamad
+                            Rizki, Muchamad Iqbal Hendriana, Muhaira Dwi Erisyahdan, Muhamad Akmal Faeyza, Muhammad
+                            Arjiky Nauval Putra C., Muhammad Nizar Ash Shidqi, Muhammad Rizky Prayoga, Nahvira Wulandari
+                            Fadhillah, Rais Arkan Nurrahman, Raisa Raya Ramadani, Raissa Athifa Mikayla Agung, Rizka
+                            Kartawinata, Sandrina Syafira Husein, Shidqis Salam, Tanti Sugiarti, Wima Amjad Regia,
+                            Yasmin Muthmainnah Az Zahra.
+                        </span>
+                    </p>
+                    <p>
+                        <span class="label">Genre:</span> Dokumenter Sekolah, Keluarga, Persahabatan
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
-        // 0. Loader Logic
+        // ===== GLOBAL VARIABLES =====
+        const heroBackgroundVideo = document.getElementById('heroBackgroundVideo');
+
+        // Fungsi pemutar video latar dengan Error Handler agar tidak AbortError
+        function playBackgroundVideoSafely() {
+            if (heroBackgroundVideo) {
+                const playPromise = heroBackgroundVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.warn("Pemutaran video latar tertunda atau dibatalkan:", error);
+                    });
+                }
+            }
+        }
+
+        // ===== LOADER =====
         window.addEventListener('load', () => {
-            // Memberikan sedikit efek delay agar mirip Netflix
             setTimeout(() => {
                 document.getElementById('loaderOverlay').classList.add('hidden');
+                // Mulai mainkan video latar dengan aman setelah loader hilang
+                playBackgroundVideoSafely();
             }, 1200);
         });
 
-        // 1. Navbar Scroll Effect
+        // ===== NAVBAR SCROLL =====
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -423,24 +738,19 @@
             }
         });
 
-        // 2. Data for Rows
-        // Using existing posters in assets/ folder
+        // ===== RENDER ROWS =====
+        const baseUrl = "https://dummyimage.com/260x146/";
         const rowsData = [
-            { 
-                title: "Lagi Ramai Ditonton", 
-                posters: ['poster_1.png', 'poster_2.png', 'poster_3.png', 'poster_4.png', 'poster_5.png', 'poster_6.png', 'poster_7.png'] 
+            {
+                title: "Kenangan Spesial",
+                posters: [baseUrl + 'E50914/fff.png&text=Film+1', baseUrl + '333/fff.png&text=Film+2', baseUrl + '444/fff.png&text=Film+3', baseUrl + '555/fff.png&text=Film+4', baseUrl + '666/fff.png&text=Film+5']
             },
-            { 
-                title: "Belajar Sambil Bermain", 
-                posters: ['poster_8.png', 'poster_9.png', 'poster_10.png', 'poster_11.png', 'poster_12.png', 'poster_1.png', 'poster_2.png'] 
-            },
-            { 
-                title: "Cerita Nusantara", 
-                posters: ['poster_12.png', 'poster_7.png', 'poster_3.png', 'poster_9.png', 'poster_5.png', 'poster_10.png', 'poster_4.png'] 
+            {
+                title: "Kegiatan Sekolah",
+                posters: [baseUrl + '777/fff.png&text=Film+6', baseUrl + '888/fff.png&text=Film+7', baseUrl + '999/fff.png&text=Film+8', baseUrl + 'aaa/000.png&text=Film+9', baseUrl + 'bbb/000.png&text=Film+10']
             }
         ];
 
-        // 3. Render Rows
         const contentSection = document.getElementById('contentSection');
         let html = '';
         rowsData.forEach(row => {
@@ -450,7 +760,7 @@
                     <div class="row-slider">
                         ${row.posters.map(poster => `
                             <div class="movie-card">
-                                <img src="assets/${poster}" alt="Poster Film" loading="lazy">
+                                <img src="${poster}" alt="Poster Film" loading="lazy">
                             </div>
                         `).join('')}
                     </div>
@@ -459,57 +769,78 @@
         });
         contentSection.innerHTML = html;
 
-        // 4. Modal Logic
-        const modal = document.getElementById('videoModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const videoPlayer = document.getElementById('mainVideoPlayer');
+        // ===== MODAL LOGIC =====
+
+        // Video Modal Elements
+        const videoModal = document.getElementById('videoModal');
+        const closeVideoModalBtn = document.getElementById('closeVideoModalBtn');
+        const videoIframe = document.getElementById('mainVideoPlayer');
         const heroPlayBtn = document.getElementById('heroPlayBtn');
 
-        // Function to open modal and attempt autoplay
-        function openModal() {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            
-            // Try to play automatically when opened
-            const playPromise = videoPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay was prevented by browser. User must click play.");
-                });
-            }
+        // Link Film Utama dari Google Drive
+        const gDriveFilmUrl = "https://drive.google.com/file/d/1XnVrIFiJfEBxGMA0TIWM-rpwXm_byhwk/preview?autoplay=1";
+
+        // Info Modal Elements
+        const infoModal = document.getElementById('infoModal');
+        const closeInfoModalBtn = document.getElementById('closeInfoModalBtn');
+        const heroInfoBtn = document.getElementById('heroInfoBtn');
+
+        // Functions for Video Modal
+        function openVideoModal() {
+            videoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            videoIframe.src = gDriveFilmUrl;
+            if (heroBackgroundVideo) heroBackgroundVideo.pause();
         }
 
-        // Function to close modal and pause video
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = ''; // Restore background scrolling
-            videoPlayer.pause(); // CRITICAL: Stop video playback
+        function closeVideoModal() {
+            videoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            videoIframe.src = ""; // Stop video GDrive
+            playBackgroundVideoSafely(); // Mainkan ulang dengan aman
         }
 
-        // Event Listeners for opening modal
-        heroPlayBtn.addEventListener('click', openModal);
+        // Functions for Info Modal
+        function openInfoModal() {
+            infoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (heroBackgroundVideo) heroBackgroundVideo.pause();
+        }
 
-        // Delegation for clicking movie cards
+        function closeInfoModal() {
+            infoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            playBackgroundVideoSafely(); // Mainkan ulang dengan aman
+        }
+
+        // Event Listeners
+        heroPlayBtn.addEventListener('click', openVideoModal);
+        heroInfoBtn.addEventListener('click', openInfoModal);
+
+        closeVideoModalBtn.addEventListener('click', closeVideoModal);
+        closeInfoModalBtn.addEventListener('click', closeInfoModal);
+
+        // Click Card opens Video
         contentSection.addEventListener('click', (e) => {
             if (e.target.closest('.movie-card')) {
-                openModal();
+                openVideoModal();
             }
         });
 
-        // Event Listeners for closing modal
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
+        // Close when clicking outside modal content
+        window.addEventListener('click', (e) => {
+            if (e.target === videoModal) closeVideoModal();
+            if (e.target === infoModal) closeInfoModal();
         });
 
         // Close on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
+            if (e.key === 'Escape') {
+                if (videoModal.classList.contains('active')) closeVideoModal();
+                if (infoModal.classList.contains('active')) closeInfoModal();
             }
         });
     </script>
 </body>
+
 </html>
