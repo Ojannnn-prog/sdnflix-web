@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDNFlix - Film Perpisahan</title>
-    <!-- Meta referrer ditambahkan untuk kelancaran iframe Google Drive -->
+    <title>SDNFlix - Petualangan Belajar</title>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <style>
         /* ===== RESET & VARIABLES ===== */
@@ -87,7 +86,7 @@
             font-weight: bold;
         }
 
-        /* ===== PROFIL USER (Kanan Atas) ===== */
+        /* ===== PROFIL USER ===== */
         .navbar-right {
             display: flex;
             align-items: center;
@@ -106,7 +105,6 @@
             font-weight: bold;
             color: #fff;
             display: block;
-            /* Default tampil di desktop */
         }
 
         .profile-avatar {
@@ -114,7 +112,6 @@
             height: 35px;
             border-radius: 4px;
             background: linear-gradient(135deg, #0f4c81, #1a73e8);
-            /* Warna biru edukasi */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -183,7 +180,6 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             display: -webkit-box;
             -webkit-line-clamp: 3;
-            /* Batasi maksimal 3 baris di mobile */
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -192,7 +188,6 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            /* Agar tombol turun ke bawah di layar sangat kecil */
         }
 
         .btn {
@@ -208,7 +203,6 @@
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
             min-width: 140px;
-            /* Lebar minimum tombol */
         }
 
         .btn:active {
@@ -248,7 +242,6 @@
         .row-title {
             padding: 0 4%;
             font-size: clamp(16px, 4vw, 20px);
-            /* Ukuran font responsif */
             font-weight: 700;
             margin-bottom: 10px;
             color: #e5e5e5;
@@ -258,7 +251,6 @@
             display: flex;
             gap: 8px;
             padding: 10px 4% 30px 4%;
-            /* Padding bawah ditambah agar shadow tidak terpotong */
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
@@ -271,7 +263,6 @@
         .movie-card {
             flex: 0 0 auto;
             width: clamp(140px, 30vw, 260px);
-            /* Ukuran kartu responsif */
             aspect-ratio: 16 / 9;
             background-color: #333;
             border-radius: 4px;
@@ -281,7 +272,6 @@
             overflow: hidden;
         }
 
-        /* Hanya jalankan efek hover di perangkat desktop (yang punya mouse) */
         @media (hover: hover) and (pointer: fine) {
             .movie-card:hover {
                 transform: scale(1.15);
@@ -320,31 +310,32 @@
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background-color: rgba(20, 20, 20, 0.7);
-            border: none;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 18px;
-            width: 40px;
-            height: 40px;
+            font-size: 20px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 10;
+            z-index: 2010;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
         }
 
         .close-btn:hover {
-            background-color: rgba(20, 20, 20, 0.95);
+            background-color: rgba(229, 9, 20, 0.9);
+            border-color: #fff;
+            transform: scale(1.1);
         }
 
         /* ===== VIDEO MODAL ===== */
         .video-modal-container {
-            width: 95%;
-            /* Lebih lebar di mobile */
+            width: 90%;
             max-width: 1000px;
             aspect-ratio: 16 / 9;
             background-color: #000;
@@ -369,7 +360,6 @@
         /* ===== INFO MODAL ===== */
         .info-modal-container {
             width: 95%;
-            /* Lebih lebar di mobile */
             max-width: 850px;
             max-height: 90vh;
             background-color: #181818;
@@ -392,7 +382,6 @@
             height: 250px;
             background: linear-gradient(to top, #181818 0%, transparent 100%), url('assets/poster_1.png') center/cover no-repeat;
             background-color: #333;
-            /* Fallback */
             display: flex;
             align-items: flex-end;
             padding: 30px 40px;
@@ -400,7 +389,6 @@
 
         .info-header h2 {
             font-size: clamp(2rem, 5vw, 3rem);
-            /* Responsif */
             font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
@@ -419,7 +407,6 @@
             font-weight: bold;
             display: flex;
             flex-wrap: wrap;
-            /* Agar rapi jika layar sempit */
             gap: 10px;
             align-items: center;
         }
@@ -456,7 +443,6 @@
             color: #fff;
             font-weight: bold;
             display: block;
-            /* Judul tabel di atas kontennya */
             margin-bottom: 3px;
         }
 
@@ -464,7 +450,75 @@
             display: inline;
         }
 
-        /* ===== MEDIA QUERIES (MOBILE RESPONSIVE) ===== */
+        /* ===== COUNTDOWN MODAL ===== */
+        .countdown-container {
+            width: 95%;
+            max-width: 450px;
+            background-color: #181818;
+            border-radius: 8px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .modal-overlay.active .countdown-container {
+            transform: scale(1);
+        }
+
+        .cd-title {
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            margin-bottom: 15px;
+            color: var(--brand-red);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 900;
+        }
+
+        .cd-desc {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .cd-timer-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .cd-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cd-box span.val {
+            color: #fff;
+            line-height: 1;
+        }
+
+        .cd-box span.lbl {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .cd-sep {
+            color: var(--brand-red);
+            margin-top: -20px;
+        }
+
+        /* ===== MEDIA QUERIES ===== */
         @media (max-width: 768px) {
             .navbar {
                 padding: 15px 4%;
@@ -474,14 +528,9 @@
                 font-size: 24px;
             }
 
-            .navbar-links {
-                display: none;
-                /* Sembunyikan link di HP agar tidak penuh */
-            }
-
+            .navbar-links,
             .profile-name {
                 display: none;
-                /* Sembunyikan nama di HP, sisakan avatar saja */
             }
 
             .hero {
@@ -508,7 +557,6 @@
 
             .info-content {
                 grid-template-columns: 1fr;
-                /* Jadi satu kolom dari atas ke bawah */
                 gap: 20px;
                 padding: 20px;
             }
@@ -518,12 +566,24 @@
                 padding: 20px;
             }
 
+            /* Penyesuaian Video Mobile agar layarnya full tanpa celah tepi */
+            .video-modal-container {
+                width: 100%;
+                border-radius: 0;
+            }
+
+            .info-modal-container {
+                width: 95%;
+            }
+
+            /* Tombol close di-adjust agar pas di pojok layar HP */
             .close-btn {
-                top: 10px;
-                right: 10px;
-                width: 35px;
-                height: 35px;
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
                 font-size: 16px;
+                background-color: rgba(0, 0, 0, 0.6);
             }
 
             .content-section {
@@ -580,16 +640,13 @@
 
 <body>
 
-    <!-- LOADER -->
     <div class="loader-overlay" id="loaderOverlay">
         <div class="loader-text">SDNFlix</div>
     </div>
 
-    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="navbar-left">
             <a href="#" class="navbar-logo">SDNFlix</a>
-            <!-- Link disembunyikan di Mobile -->
             <ul class="navbar-links">
                 <li><a href="#">Beranda</a></li>
                 <li><a href="#">Animasi Seru</a></li>
@@ -597,8 +654,6 @@
                 <li><a href="#">Budi Pekerti</a></li>
             </ul>
         </div>
-
-        <!-- PROFIL PAJANGAN -->
         <div class="navbar-right">
             <div class="profile-container">
                 <span class="profile-name">SDN 231 Sukaasih</span>
@@ -607,10 +662,8 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
     <header class="hero">
         <div class="hero-video-wrapper">
-            <!-- Video Latar Tetap Menggunakan File Lokal Assets. Autoplay dikontrol penuh via JS untuk menghindari AbortError -->
             <video muted loop playsinline id="heroBackgroundVideo"
                 style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
                 <source src="assets/[TRAILER] 64 DETAK, SATU RUANG - SDN 231 SUKAASIH (1080p, h264).mp4"
@@ -629,30 +682,29 @@
         </div>
     </header>
 
-    <!-- CONTENT ROWS -->
     <main class="content-section" id="contentSection">
-        <!-- Rows will be injected by JavaScript -->
+        <!-- Terisi oleh JavaScript -->
     </main>
 
     <!-- VIDEO MODAL (PUTAR FILM) -->
     <div class="modal-overlay" id="videoModal">
+        <!-- Tombol dipindahkan ke luar container agar tidak menabrak iframe Google Drive -->
+        <button class="close-btn" id="closeVideoModalBtn">✖</button>
         <div class="video-modal-container">
-            <button class="close-btn" id="closeVideoModalBtn">✖</button>
-            <!-- Link Google Drive Utama -->
             <iframe id="mainVideoPlayer" src="" allow="autoplay" allowfullscreen
                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
     </div>
 
-    <!-- INFO MODAL (DETAIL FILM & PEMERAN) -->
+    <!-- INFO MODAL (DETAIL FILM) -->
     <div class="modal-overlay" id="infoModal">
+        <!-- Tombol dipindahkan ke luar container -->
+        <button class="close-btn" id="closeInfoModalBtn">✖</button>
         <div class="info-modal-container">
-            <button class="close-btn" id="closeInfoModalBtn">✖</button>
             <div class="info-header">
                 <h2>64 Detak, Satu Ruang</h2>
             </div>
             <div class="info-content">
-                <!-- Sisi Kiri: Sinopsis -->
                 <div class="info-left">
                     <div class="info-meta">
                         <span class="match">100% Cocok</span>
@@ -668,124 +720,161 @@
                         tinggi.
                     </p>
                 </div>
-                <!-- Sisi Kanan: Detail Cast & Produser -->
                 <div class="info-details">
-                    <p>
-                        <span class="label">Produser:</span> SDN 231 Sukaasih
+                    <p><span class="label">Produser:</span> SDN 231 Sukaasih</p>
+                    <p><span class="label">Pemeran:</span>
+                        <span class="cast-list">Adnan Maulana Gani, Almahira Chantrice Arifin, Alvaro Nur Gavriel,
+                            Amanda Khoirunnisa, Anindya Aulia Zahra, Asri Rahmadhani, Christian Juliano, Cica Susanti,
+                            Deja Akbar Nugraha, Delina Alysa Permadi, Gea Natasha Aurelia, Gista Ainaya Febrianti, Iksan
+                            Rudiyansyah, Iqbal Radika Putra, Kaira Rizkiani, Meysya Salsa Futry, Moch Raihan Ramdhani,
+                            Mohamad Al Habib, Muhamad Dermawan, Nadhifa Syahla Qanita, Nazwa Alika Lesmana, Puri
+                            Juniyani, Radit Aditiya Saputra, Ratu Chairunissa Aprilianiputri, Rehan Azhar Wiharsa, Rifat
+                            Fathur Rahman, Robbi Zakaria, Setia Putri Arinda, Siti Raisya Assifa Putri Sudrajat, Yumna
+                            Fahira Aziza, Zamzam Septian, Zehan Amzhar Wiharsa, Aisah Saskya Bilqis, Alesha Dzikra
+                            Wijaya Putri, Aqila Putri Herdiansyah, Aqilla Julianti, Billy Dzulfikar, Dara Ocktarina, Dea
+                            Gustian, Furi Deanova Azhar, Ghaisani Nareswari Danuwidjaja, Ghisya Humaira Aqila, Himada
+                            Wafiq Alfatih, Iiko Hansamu Trie, Khaleesi Azahra Kayla Sophia, Mahalya Raya Gusilpa, Meisya
+                            Juanita, Mochamad Rizki, Muchamad Iqbal Hendriana, Muhaira Dwi Erisyahdan, Muhamad Akmal
+                            Faeyza, Muhammad Arjiky Nauval Putra C., Muhammad Nizar Ash Shidqi, Muhammad Rizky Prayoga,
+                            Nahvira Wulandari Fadhillah, Rais Arkan Nurrahman, Raisa Raya Ramadani, Raissa Athifa
+                            Mikayla Agung, Rizka Kartawinata, Sandrina Syafira Husein, Shidqis Salam, Tanti Sugiarti,
+                            Wima Amjad Regia, Yasmin Muthmainnah Az Zahra.</span>
                     </p>
-                    <p>
-                        <span class="label">Pemeran:</span>
-                        <span class="cast-list">
-                            Adnan Maulana Gani, Almahira Chantrice Arifin, Alvaro Nur Gavriel, Amanda Khoirunnisa,
-                            Anindya Aulia Zahra, Asri Rahmadhani, Christian Juliano, Cica Susanti, Deja Akbar Nugraha,
-                            Delina Alysa Permadi, Gea Natasha Aurelia, Gista Ainaya Febrianti, Iksan Rudiyansyah, Iqbal
-                            Radika Putra, Kaira Rizkiani, Meysya Salsa Futry, Moch Raihan Ramdhani, Mohamad Al Habib,
-                            Muhamad Dermawan, Nadhifa Syahla Qanita, Nazwa Alika Lesmana, Puri Juniyani, Radit Aditiya
-                            Saputra, Ratu Chairunissa Aprilianiputri, Rehan Azhar Wiharsa, Rifat Fathur Rahman, Robbi
-                            Zakaria, Setia Putri Arinda, Siti Raisya Assifa Putri Sudrajat, Yumna Fahira Aziza, Zamzam
-                            Septian, Zehan Amzhar Wiharsa, Aisah Saskya Bilqis, Alesha Dzikra Wijaya Putri, Aqila Putri
-                            Herdiansyah, Aqilla Julianti, Billy Dzulfikar, Dara Ocktarina, Dea Gustian, Furi Deanova
-                            Azhar, Ghaisani Nareswari Danuwidjaja, Ghisya Humaira Aqila, Himada Wafiq Alfatih, Iiko
-                            Hansamu Trie, Khaleesi Azahra Kayla Sophia, Mahalya Raya Gusilpa, Meisya Juanita, Mochamad
-                            Rizki, Muchamad Iqbal Hendriana, Muhaira Dwi Erisyahdan, Muhamad Akmal Faeyza, Muhammad
-                            Arjiky Nauval Putra C., Muhammad Nizar Ash Shidqi, Muhammad Rizky Prayoga, Nahvira Wulandari
-                            Fadhillah, Rais Arkan Nurrahman, Raisa Raya Ramadani, Raissa Athifa Mikayla Agung, Rizka
-                            Kartawinata, Sandrina Syafira Husein, Shidqis Salam, Tanti Sugiarti, Wima Amjad Regia,
-                            Yasmin Muthmainnah Az Zahra.
-                        </span>
-                    </p>
-                    <p>
-                        <span class="label">Genre:</span> Dokumenter Sekolah, Keluarga, Persahabatan
-                    </p>
+                    <p><span class="label">Genre:</span> Dokumenter Sekolah, Keluarga, Persahabatan</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- COUNTDOWN MODAL -->
+    <div class="modal-overlay" id="countdownModal">
+        <!-- Tombol dipindahkan ke luar container -->
+        <button class="close-btn" id="closeCountdownBtn">✖</button>
+        <div class="countdown-container">
+            <h2 class="cd-title">Segera Tayang!</h2>
+            <p class="cd-desc">Film "64 Detak, Satu Ruang" baru bisa ditonton pada:<br><b style="color:white;">Selasa,
+                    16 Juni 2026 - 07.00 WIB</b></p>
+
+            <div class="cd-timer-wrapper">
+                <div class="cd-box">
+                    <span class="val" id="cd-hours">00</span>
+                    <span class="lbl">Jam</span>
+                </div>
+                <span class="cd-sep">:</span>
+                <div class="cd-box">
+                    <span class="val" id="cd-minutes">00</span>
+                    <span class="lbl">Menit</span>
+                </div>
+                <span class="cd-sep">:</span>
+                <div class="cd-box">
+                    <span class="val" id="cd-seconds">00</span>
+                    <span class="lbl">Detik</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ===== GLOBAL VARIABLES =====
         const heroBackgroundVideo = document.getElementById('heroBackgroundVideo');
 
-        // Fungsi pemutar video latar dengan Error Handler agar tidak AbortError
         function playBackgroundVideoSafely() {
             if (heroBackgroundVideo) {
                 const playPromise = heroBackgroundVideo.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.warn("Pemutaran video latar tertunda atau dibatalkan:", error);
-                    });
+                    playPromise.catch(error => { console.warn("Autoplay tertunda:", error); });
                 }
             }
         }
 
-        // ===== LOADER =====
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loaderOverlay').classList.add('hidden');
-                // Mulai mainkan video latar dengan aman setelah loader hilang
                 playBackgroundVideoSafely();
             }, 1200);
         });
 
-        // ===== NAVBAR SCROLL =====
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
         });
 
-        // ===== RENDER ROWS =====
         const baseUrl = "https://dummyimage.com/260x146/";
         const rowsData = [
-            {
-                title: "Kenangan Spesial",
-                posters: [baseUrl + 'E50914/fff.png&text=Film+1', baseUrl + '333/fff.png&text=Film+2', baseUrl + '444/fff.png&text=Film+3', baseUrl + '555/fff.png&text=Film+4', baseUrl + '666/fff.png&text=Film+5']
-            },
-            {
-                title: "Kegiatan Sekolah",
-                posters: [baseUrl + '777/fff.png&text=Film+6', baseUrl + '888/fff.png&text=Film+7', baseUrl + '999/fff.png&text=Film+8', baseUrl + 'aaa/000.png&text=Film+9', baseUrl + 'bbb/000.png&text=Film+10']
-            }
+            { title: "Kenangan Spesial", posters: [baseUrl + 'E50914/fff.png&text=Film+1', baseUrl + '333/fff.png&text=Film+2', baseUrl + '444/fff.png&text=Film+3', baseUrl + '555/fff.png&text=Film+4', baseUrl + '666/fff.png&text=Film+5'] },
+            { title: "Kegiatan Sekolah", posters: [baseUrl + '777/fff.png&text=Film+6', baseUrl + '888/fff.png&text=Film+7', baseUrl + '999/fff.png&text=Film+8', baseUrl + 'aaa/000.png&text=Film+9', baseUrl + 'bbb/000.png&text=Film+10'] }
         ];
 
         const contentSection = document.getElementById('contentSection');
         let html = '';
         rowsData.forEach(row => {
-            html += `
-                <div class="row">
-                    <h2 class="row-title">${row.title}</h2>
-                    <div class="row-slider">
-                        ${row.posters.map(poster => `
-                            <div class="movie-card">
-                                <img src="${poster}" alt="Poster Film" loading="lazy">
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+            html += `<div class="row"><h2 class="row-title">${row.title}</h2><div class="row-slider">`;
+            row.posters.forEach(poster => {
+                html += `<div class="movie-card"><img src="${poster}" alt="Poster Film" loading="lazy"></div>`;
+            });
+            html += `</div></div>`;
         });
         contentSection.innerHTML = html;
 
-        // ===== MODAL LOGIC =====
-
-        // Video Modal Elements
+        // ===== MODAL ELEMENTS =====
         const videoModal = document.getElementById('videoModal');
-        const closeVideoModalBtn = document.getElementById('closeVideoModalBtn');
-        const videoIframe = document.getElementById('mainVideoPlayer');
-        const heroPlayBtn = document.getElementById('heroPlayBtn');
+        const infoModal = document.getElementById('infoModal');
+        const countdownModal = document.getElementById('countdownModal');
 
-        // Link Film Utama dari Google Drive
+        const videoIframe = document.getElementById('mainVideoPlayer');
         const gDriveFilmUrl = "https://drive.google.com/file/d/1XnVrIFiJfEBxGMA0TIWM-rpwXm_byhwk/preview?autoplay=1";
 
-        // Info Modal Elements
-        const infoModal = document.getElementById('infoModal');
-        const closeInfoModalBtn = document.getElementById('closeInfoModalBtn');
-        const heroInfoBtn = document.getElementById('heroInfoBtn');
+        // TANGGAL RILIS: 16 Juni 2026, 07:00:00 WIB (+07:00)
+        const releaseDate = new Date("2026-06-16T07:00:00+07:00").getTime();
+        let cdInterval;
 
-        // Functions for Video Modal
+        // ===== CHECK ACCESS (MENGGANTIKAN OPEN VIDEO MODAL) =====
+        function attemptPlayVideo() {
+            const now = new Date().getTime();
+            if (now >= releaseDate) {
+                openVideoModal(); // Jika waktu sudah lewat, putar film
+            } else {
+                openCountdownModal(); // Jika belum, tampilkan timer
+            }
+        }
+
+        // ===== COUNTDOWN LOGIC =====
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = releaseDate - now;
+
+            if (distance <= 0) {
+                clearInterval(cdInterval);
+                closeCountdownModal();
+                openVideoModal(); // Otomatis main jika mereka menatap layar saat hitungan habis
+                return;
+            }
+
+            const h = Math.floor(distance / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('cd-minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('cd-seconds').innerText = s.toString().padStart(2, '0');
+        }
+
+        function openCountdownModal() {
+            countdownModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (heroBackgroundVideo) heroBackgroundVideo.pause();
+            updateCountdown();
+            cdInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function closeCountdownModal() {
+            countdownModal.classList.remove('active');
+            document.body.style.overflow = '';
+            clearInterval(cdInterval);
+            playBackgroundVideoSafely();
+        }
+
+        // ===== VIDEO & INFO MODAL LOGIC =====
         function openVideoModal() {
             videoModal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -796,11 +885,10 @@
         function closeVideoModal() {
             videoModal.classList.remove('active');
             document.body.style.overflow = '';
-            videoIframe.src = ""; // Stop video GDrive
-            playBackgroundVideoSafely(); // Mainkan ulang dengan aman
+            videoIframe.src = "";
+            playBackgroundVideoSafely();
         }
 
-        // Functions for Info Modal
         function openInfoModal() {
             infoModal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -810,34 +898,32 @@
         function closeInfoModal() {
             infoModal.classList.remove('active');
             document.body.style.overflow = '';
-            playBackgroundVideoSafely(); // Mainkan ulang dengan aman
+            playBackgroundVideoSafely();
         }
 
-        // Event Listeners
-        heroPlayBtn.addEventListener('click', openVideoModal);
-        heroInfoBtn.addEventListener('click', openInfoModal);
+        // ===== EVENT LISTENERS =====
+        document.getElementById('heroPlayBtn').addEventListener('click', attemptPlayVideo);
+        document.getElementById('heroInfoBtn').addEventListener('click', openInfoModal);
 
-        closeVideoModalBtn.addEventListener('click', closeVideoModal);
-        closeInfoModalBtn.addEventListener('click', closeInfoModal);
+        document.getElementById('closeVideoModalBtn').addEventListener('click', closeVideoModal);
+        document.getElementById('closeInfoModalBtn').addEventListener('click', closeInfoModal);
+        document.getElementById('closeCountdownBtn').addEventListener('click', closeCountdownModal);
 
-        // Click Card opens Video
         contentSection.addEventListener('click', (e) => {
-            if (e.target.closest('.movie-card')) {
-                openVideoModal();
-            }
+            if (e.target.closest('.movie-card')) attemptPlayVideo();
         });
 
-        // Close when clicking outside modal content
         window.addEventListener('click', (e) => {
             if (e.target === videoModal) closeVideoModal();
             if (e.target === infoModal) closeInfoModal();
+            if (e.target === countdownModal) closeCountdownModal();
         });
 
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (videoModal.classList.contains('active')) closeVideoModal();
                 if (infoModal.classList.contains('active')) closeInfoModal();
+                if (countdownModal.classList.contains('active')) closeCountdownModal();
             }
         });
     </script>
