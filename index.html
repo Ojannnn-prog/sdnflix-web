@@ -337,7 +337,6 @@
         .video-modal-container {
             width: 90%;
             max-width: 1000px;
-            aspect-ratio: 16 / 9;
             background-color: #000;
             border-radius: 8px;
             position: relative;
@@ -347,14 +346,24 @@
             overflow: hidden;
         }
 
+        .video-modal-container::before {
+            content: "";
+            display: block;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
         .modal-overlay.active .video-modal-container {
             transform: scale(1);
         }
 
         .video-modal-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
         }
 
         /* ===== INFO MODAL ===== */
@@ -569,6 +578,7 @@
             /* Penyesuaian Video Mobile agar layarnya full tanpa celah tepi */
             .video-modal-container {
                 width: 100%;
+                max-width: 177.77vh;
                 border-radius: 0;
             }
 
