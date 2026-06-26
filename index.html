@@ -818,7 +818,7 @@
                 items: [
                     { src: baseUrl + 'E50914/fff.png&text=64+Detak', type: 'main' },
                     { src: baseUrl + '3897f0/fff.png&text=Paturay+Tineung', type: 'second' },
-                    { src: baseUrl + '444/fff.png&text=Film+3', type: 'main' },
+                    { src: baseUrl + '4CAF50/fff.png&text=Kelulusan+2025', type: 'third' },
                     { src: baseUrl + '555/fff.png&text=Film+4', type: 'main' },
                     { src: baseUrl + '666/fff.png&text=Film+5', type: 'main' }
                 ] 
@@ -946,6 +946,9 @@
                 if (card.dataset.type === 'second') {
                     // Putar film kedua tanpa countdown
                     openVideoModal("https://drive.google.com/file/d/1rLtmppKIiG8tjdBIRATY27f-Mn_eYvBP/preview?autoplay=1");
+                } else if (card.dataset.type === 'third') {
+                    // Buka folder Google Drive di tab baru
+                    window.open("https://drive.google.com/drive/folders/1eby_OibzzwxbTKVpJ0WWhj38ZBpyuQje?usp=sharing", "_blank");
                 } else {
                     attemptPlayVideo();
                 }
