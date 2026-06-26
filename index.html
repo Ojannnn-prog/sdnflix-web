@@ -366,6 +366,7 @@
             display: block;
         }
 
+
         /* ===== INFO MODAL ===== */
         .info-modal-container {
             width: 95%;
@@ -389,7 +390,7 @@
             position: relative;
             width: 100%;
             height: 250px;
-            background: linear-gradient(to top, #181818 0%, transparent 100%), url('assets/poster_1.png') center/cover no-repeat;
+            background: linear-gradient(to top, #181818 0%, transparent 100%), url('assets/WhatsApp Image 2026-06-02 at 10.09.38 (1).jpeg') center/cover no-repeat;
             background-color: #333;
             display: flex;
             align-items: flex-end;
@@ -756,6 +757,7 @@
         </div>
     </div>
 
+
     <!-- COUNTDOWN MODAL -->
     <div class="modal-overlay" id="countdownModal">
         <!-- Tombol dipindahkan ke luar container -->
@@ -811,16 +813,34 @@
 
         const baseUrl = "https://dummyimage.com/260x146/";
         const rowsData = [
-            { title: "Kenangan Spesial", posters: [baseUrl + 'E50914/fff.png&text=Film+1', baseUrl + '333/fff.png&text=Film+2', baseUrl + '444/fff.png&text=Film+3', baseUrl + '555/fff.png&text=Film+4', baseUrl + '666/fff.png&text=Film+5'] },
-            { title: "Kegiatan Sekolah", posters: [baseUrl + '777/fff.png&text=Film+6', baseUrl + '888/fff.png&text=Film+7', baseUrl + '999/fff.png&text=Film+8', baseUrl + 'aaa/000.png&text=Film+9', baseUrl + 'bbb/000.png&text=Film+10'] }
+            { 
+                title: "Kenangan Spesial", 
+                items: [
+                    { src: baseUrl + 'E50914/fff.png&text=64+Detak', type: 'main' },
+                    { src: baseUrl + '3897f0/fff.png&text=Paturay+Tineung', type: 'second' },
+                    { src: baseUrl + '444/fff.png&text=Film+3', type: 'main' },
+                    { src: baseUrl + '555/fff.png&text=Film+4', type: 'main' },
+                    { src: baseUrl + '666/fff.png&text=Film+5', type: 'main' }
+                ] 
+            },
+            { 
+                title: "Kegiatan Sekolah", 
+                items: [
+                    { src: baseUrl + '777/fff.png&text=Film+6', type: 'main' },
+                    { src: baseUrl + '888/fff.png&text=Film+7', type: 'main' },
+                    { src: baseUrl + '999/fff.png&text=Film+8', type: 'main' },
+                    { src: baseUrl + 'aaa/000.png&text=Film+9', type: 'main' },
+                    { src: baseUrl + 'bbb/000.png&text=Film+10', type: 'main' }
+                ] 
+            }
         ];
 
         const contentSection = document.getElementById('contentSection');
         let html = '';
         rowsData.forEach(row => {
             html += `<div class="row"><h2 class="row-title">${row.title}</h2><div class="row-slider">`;
-            row.posters.forEach(poster => {
-                html += `<div class="movie-card"><img src="${poster}" alt="Poster Film" loading="lazy"></div>`;
+            row.items.forEach(item => {
+                html += `<div class="movie-card" data-type="${item.type}"><img src="${item.src}" alt="Poster Film" loading="lazy"></div>`;
             });
             html += `</div></div>`;
         });
@@ -830,6 +850,7 @@
         const videoModal = document.getElementById('videoModal');
         const infoModal = document.getElementById('infoModal');
         const countdownModal = document.getElementById('countdownModal');
+        const igModal = document.getElementById('igModal');
 
         const videoIframe = document.getElementById('mainVideoPlayer');
         const gDriveFilmUrl = "https://drive.google.com/file/d/1XnVrIFiJfEBxGMA0TIWM-rpwXm_byhwk/preview?autoplay=1";
@@ -842,7 +863,7 @@
         function attemptPlayVideo() {
             const now = new Date().getTime();
             if (now >= releaseDate) {
-                openVideoModal(); // Jika waktu sudah lewat, putar film
+                openVideoModal(gDriveFilmUrl); // Jika waktu sudah lewat, putar film utama
             } else {
                 openCountdownModal(); // Jika belum, tampilkan timer
             }
@@ -856,7 +877,7 @@
             if (distance <= 0) {
                 clearInterval(cdInterval);
                 closeCountdownModal();
-                openVideoModal(); // Otomatis main jika mereka menatap layar saat hitungan habis
+                openVideoModal(gDriveFilmUrl); // Otomatis main jika mereka menatap layar saat hitungan habis
                 return;
             }
 
@@ -885,10 +906,10 @@
         }
 
         // ===== VIDEO & INFO MODAL LOGIC =====
-        function openVideoModal() {
+        function openVideoModal(videoUrl) {
             videoModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            videoIframe.src = gDriveFilmUrl;
+            videoIframe.src = videoUrl;
             if (heroBackgroundVideo) heroBackgroundVideo.pause();
         }
 
@@ -920,7 +941,15 @@
         document.getElementById('closeCountdownBtn').addEventListener('click', closeCountdownModal);
 
         contentSection.addEventListener('click', (e) => {
-            if (e.target.closest('.movie-card')) attemptPlayVideo();
+            const card = e.target.closest('.movie-card');
+            if (card) {
+                if (card.dataset.type === 'second') {
+                    // Putar film kedua tanpa countdown
+                    openVideoModal("https://drive.google.com/file/d/1rLtmppKIiG8tjdBIRATY27f-Mn_eYvBP/preview?autoplay=1");
+                } else {
+                    attemptPlayVideo();
+                }
+            }
         });
 
         window.addEventListener('click', (e) => {
